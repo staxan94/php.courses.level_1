@@ -51,20 +51,25 @@ function displayDir($dir) {
 }
 
 function removeDir($dir) {
-    $list = scandir($dir);
-    array_splice($list, 0, 2);
-    if (count($list) > 0) {
-        for ($i = 0; $i < count($list); $i++) {
-            $path = $dir . "/" . $list[$i];
-            $isDir = is_dir($path);
-            if ($isDir) {removeDir($path);}
-            else {
-                unlink($path);
+    if (file_exists($dir)) {
+        $list = scandir($dir);
+        array_splice($list, 0, 2);
+        if (count($list) > 0) {
+            for ($i = 0; $i < count($list); $i++) {
+                $path = $dir . "/" . $list[$i];
+                $isDir = is_dir($path);
+                if ($isDir) {removeDir($path);}
+                else {
+                    unlink($path);
+                }
             }
         }
-    }
         echo "Директория: <<" . $dir . ">> --[УДАЛЕНА]--";
         rmdir($dir);
+    } else {
+        echo "Директория не существует!";
+    }
+
 }
 
 removeDir("C:/Develop/iTry/Deleted");
